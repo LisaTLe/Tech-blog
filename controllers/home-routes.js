@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { debugPort } = require("process");
 const { Post, Comment, User } = require("../models");
 
 //GET request for homepage
