@@ -13,7 +13,7 @@ const commentData = [
     }
 ]
 
-const seedComments = async => {
+const seedComments = async() => {
     await Comment.bulkCreate(commentData);
 };
 
