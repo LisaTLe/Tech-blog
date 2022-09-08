@@ -6,11 +6,12 @@ const withAuth = require("../../utils/auth");
 //GET request for all posts
 router.get("/", (req, res) => {
   Post.findAll({
-    attributes: ["id", "title", "post_content", "user_id"],
+    attributes: ["id", "title", "post_content", "created_at"],
+    order: [["created_at", "DESC"]],
     include: [
       {
         model: Comment,
-        attributes: ["id", "title", "post_content", "user_id"],
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
         include: {
           model: User,
           attributes: ["username", "github"],
@@ -35,7 +36,7 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-    attributes: ["id", "title", "post_content", "user_id"],
+    attributes: ["id", "title", "post_content", "created_at"],
     include: [
       {
         model: User,
@@ -43,7 +44,7 @@ router.get("/:id", (req, res) => {
       },
       {
         model: Comment,
-        attributes: ["id", "comment_text", "post_id", "user_id"],
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
         include: {
           model: User,
           attributes: ["username", "github"],
@@ -68,7 +69,7 @@ router.get("/:id", (req, res) => {
 router.post("/", withAuth, (req, res) => {
   Post.create({
     title: req.body.title,
-    content: req.body.content,
+    post_content: req.body.post_content,
     user_id: req.session.user_id,
   })
     .then((dbPostData) => res.json(dbPostData))
@@ -83,7 +84,7 @@ router.put("/:id", withAuth, (req, res) => {
   Post.update(
     {
       title: req.body.title,
-      content: req.body.content,
+      post_content: req.body.post_content,
     },
     {
       where: {
