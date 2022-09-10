@@ -9,8 +9,6 @@ const postData = [
   },
 ];
 
-const seedPost = async () => {
-  await Post.bulkCreate(postData);
-};
+const seedPost = () => Post.bulkCreate(postData);
 
 module.exports = seedPost;
